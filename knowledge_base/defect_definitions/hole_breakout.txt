@@ -1,0 +1,31 @@
+Defect: Hole Breakout (HB)
+Code: HB | Group: copper_deficiency_defect | Default action: reject
+
+What it is:
+A drilled hole that is not fully within the copper annular ring of the pad. The hole edge breaks out of the pad boundary, exposing the base material and eliminating part of the annular ring.
+
+What it looks like:
+The drill hole is visibly off-center relative to the pad. Part of the hole circumference is outside the copper pad — bare laminate or no copper visible at that edge. The remaining annular ring is incomplete.
+
+Why it happens:
+- Drill registration error — drill bit positioned incorrectly
+- Layer-to-layer misregistration in multilayer boards
+- Drill wander on hard substrates
+- Incorrect drill file or coordinate offset in CAM
+
+Electrical impact:
+Reduced or eliminated annular ring means reduced solderability and mechanical strength for through-hole components. Can cause unreliable solder joints that fail under thermal cycling or vibration. In severe cases the via barrel has no connection to the pad copper.
+
+Severity: High
+- Minor breakout (<25% of circumference outside ring) → engineering review, may be acceptable with customer concession
+- Moderate breakout (25–50%) → reject in most cases
+- Severe breakout (>50% or complete breakout) → reject, return to supplier
+
+Action thresholds per IPC-6012:
+- Class 2: Minimum annular ring 0.05mm after breakout
+- Class 3: Minimum annular ring 0.10mm after breakout, no breakout permitted for via-in-pad
+- Any breakout that eliminates the annular ring entirely → reject regardless of class
+
+Rework:
+Not reworkable. Fabrication defect — return to PCB supplier.
+Document with measurement of remaining annular ring for supplier corrective action.

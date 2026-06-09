@@ -1,0 +1,36 @@
+Defect: Conductor Scratch (CS)
+Code: CS | Group: conductor_scratch_defect | Default action: rework or reject
+
+What it is:
+A physical scratch or gouge on the surface of a copper conductor that reduces its cross-section or exposes the underlying layer. Caused by mechanical contact with a sharp object.
+
+What it looks like:
+Linear mark across a trace, usually oriented in one direction (tool or handling direction). May remove copper partially or fully across the scratch line. Scratch through the conductor looks like a partial open. Scratch through solder mask only looks like exposed copper with no visible conductor damage.
+
+Why it happens:
+- Handling damage — sharp objects, probes, fixtures
+- AOI or test fixture contact during previous process step
+- Board sliding against sharp edge during transport or storage
+- Depaneling tooling contact
+
+Electrical impact:
+Depends on depth and location:
+- Scratch through solder mask only → cosmetic, assess copper condition underneath
+- Scratch partially through copper → increases resistance at that point, heating risk under load
+- Scratch fully through copper → open circuit
+
+Severity: Medium to High
+- Solder mask scratch only, copper intact → pass or cosmetic rework
+- Copper scratch, <25% depth → measure and compare to minimum conductor thickness spec
+- Copper scratch, >25% depth or full open → reject
+
+Action thresholds:
+- Verify copper continuity across scratch with resistance measurement
+- If resistance is within acceptable range and conductor cross-section meets spec → engineering review
+- If resistance elevated or cross-section below spec → reject or specialist repair
+- Scratch near or across a fine-pitch trace → apply stricter threshold
+
+Rework:
+Solder mask scratch: conformal coat or solder mask repair pen over exposed copper if no conductor damage.
+Conductor scratch with partial copper removal: specialist copper repair, resistance verification required after.
+Full open from scratch: reject.

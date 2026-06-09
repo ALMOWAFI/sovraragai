@@ -1,0 +1,33 @@
+Defect: Mouse Bite (MB)
+Code: MB | Group: copper_deficiency_defect | Default action: rework or reject
+
+What it is:
+Irregular edge erosion of a copper trace or pad, resembling small bites taken out of the conductor edge. Reduces the effective cross-section of the conductor.
+
+What it looks like:
+Scalloped or eroded edges along a copper trace or pad. The conductor is still mostly present but the edges are irregular and narrowed. Different from an open — the trace is not fully broken, just eaten away at the edges.
+
+Why it happens:
+- Over-etching during PCB fabrication
+- Chemical contamination of etchant
+- Poor resist adhesion allowing etchant to creep under the resist edge
+- Mechanical abrasion during handling
+
+Electrical impact:
+Depends on severity. Minor mouse bite may only slightly increase trace resistance. Severe mouse bite reduces the conductor below its current-carrying capacity, causing localized heating and eventual open circuit under load.
+
+Severity: Medium to High
+- Minor (conductor width reduced <25%) → rework candidate or accept with engineering review
+- Moderate (conductor width reduced 25–50%) → rework or reject depending on current requirement of that trace
+- Severe (conductor width reduced >50%) → reject
+
+Action thresholds:
+- Measure remaining conductor width against design minimum width
+- If remaining width meets minimum spec → may pass with engineering approval
+- If below minimum spec → reject or attempt copper repair (specialist only)
+- On high-current traces → apply stricter threshold, reject if any measurable reduction
+
+Rework:
+Minor cases: copper repair paste or conductive epoxy applied by qualified technician, followed by re-inspection.
+Severe cases: reject, return to supplier.
+Always re-inspect conductivity and resistance after any repair attempt.

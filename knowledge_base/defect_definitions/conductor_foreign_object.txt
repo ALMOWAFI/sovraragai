@@ -1,0 +1,37 @@
+Defect: Conductor Foreign Object (CFO)
+Code: CFO | Group: foreign_object_defect | Default action: rework
+
+What it is:
+Foreign material (not copper, not solder mask) found on or near a copper conductor. The object is in contact with or overlapping a conductor, creating a risk of contamination, corrosion, or electrical interference.
+
+What it looks like:
+Debris, particle, fiber, or residue sitting on top of or adjacent to a copper trace. May be metallic (conductive risk) or non-metallic (contamination risk). Visible under AOI as an anomaly on or near the conductor.
+
+Types:
+- Metallic foreign object: conductive particle, solder ball, tin whisker, metal swarf — high risk
+- Non-metallic foreign object: fiber, dust, resin residue, flux residue — lower risk but still contamination
+
+Why it happens:
+- Contamination during assembly — airborne particles landing on board
+- Solder splash from nearby soldering operation
+- Flux residue not cleaned
+- Lint or fiber from handling (gloves, wipes)
+- Swarf from nearby mechanical operations (drilling, routing)
+
+Electrical impact:
+Metallic object on a conductor can bridge to an adjacent conductor causing a short. Non-metallic contamination can cause corrosion under humid conditions or act as a moisture trap. Severity scales with conductivity of the foreign object and its proximity to adjacent conductors.
+
+Severity: High (metallic) / Medium (non-metallic)
+- Metallic particle on conductor or in gap between conductors → treat as potential short, high priority rework
+- Non-metallic residue on conductor → rework before passing, document
+
+Action thresholds:
+- Any metallic foreign object → rework immediately, verify clearance after removal
+- Non-metallic object on conductor → rework, clean, re-inspect
+- Object fully between two conductors with no gap → reject if cannot be safely removed
+
+Rework:
+Remove with ESD-safe tweezers or brush under magnification.
+Do not drag across conductors — lift off vertically.
+Clean area with IPA after removal.
+Re-inspect to verify conductor is undamaged and no residue remains.

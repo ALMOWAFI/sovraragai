@@ -1,0 +1,42 @@
+Defect: Base Material Foreign Object (BMFO)
+Code: BMFO | Group: foreign_object_defect | Default action: rework
+
+What it is:
+Foreign material found on or embedded in the PCB base material (substrate), away from conductors. The object is on the laminate surface, in clearance areas, or embedded in the substrate itself.
+
+What it looks like:
+Debris or particle visible on the board surface in non-conductor areas. May appear as a raised spot, discoloration, or inclusion in the laminate. Usually in areas between traces or in keep-out zones.
+
+Types:
+- Surface particle: sitting on substrate surface, removable
+- Embedded inclusion: trapped inside laminate layers during fabrication, not removable
+- Adhesive or resin blob: excess material from lamination or masking process
+
+Why it happens:
+- Contamination during laminate fabrication
+- Airborne particles settling on board during processing
+- Handling contamination
+- Excess adhesive from lamination press
+- Resin bleed from inner layers during multilayer pressing
+
+Electrical impact:
+Lower immediate risk than conductor foreign objects since there is no direct conductor contact. However:
+- Embedded inclusions can cause localized delamination under thermal stress
+- Surface particles near conductors can trap moisture and cause corrosion over time
+- Large inclusions may affect board flatness or component seating
+
+Severity: Medium
+- Surface particle, easily removable, away from conductors → rework
+- Surface particle near conductor (<0.5mm) → rework, verify no conductor contamination
+- Embedded inclusion visible through laminate → engineering review, assess delamination risk
+
+Action thresholds:
+- Removable surface particle → clean, re-inspect
+- Embedded inclusion affecting board flatness → reject
+- Embedded inclusion in critical zone (under BGA, near fine-pitch IC) → reject
+- Embedded inclusion in non-critical zone → engineering review, may pass with documentation
+
+Rework:
+Surface particle: remove with ESD brush or tweezers, clean with IPA.
+Verify board surface is undamaged after removal.
+Embedded inclusions cannot be reworked — disposition via engineering or MRB.

@@ -1,0 +1,32 @@
+Defect: Spurious Copper (SC)
+Code: SC | Group: copper_residue_defect | Default action: rework or reject
+
+What it is:
+Isolated copper residue remaining on the PCB surface in areas that should be clear. Not connected to any intended conductor — it is unwanted copper left after etching.
+
+What it looks like:
+Small copper islands, blobs, or patches in areas between conductors or in clearance zones. Not attached to any trace or pad. Visible as metallic spots on the board surface under inspection.
+
+Why it happens:
+- Incomplete etching — etchant did not remove all unwanted copper
+- Contamination on the resist allowing copper to survive etching underneath
+- Copper splash from drilling or routing landing in clear areas
+- Photoresist pinholes allowing copper exposure in wrong areas
+
+Electrical impact:
+On its own, isolated spurious copper has no immediate electrical effect. The risk is future migration — under humidity and voltage bias, copper can migrate and eventually bridge to a conductor, causing a short. In high-voltage designs it reduces creepage distance.
+
+Severity: Medium
+- Small isolated blob far from any conductor → rework, low urgency
+- Blob within 0.1mm of a conductor → rework immediately, risk of short under field conditions
+- Blob touching a conductor → treat as Short, reject
+
+Action thresholds:
+- Check distance from nearest conductor against minimum clearance spec
+- If within spec clearance → must be removed before passing
+- If outside spec clearance but still on board → engineering review, document and monitor
+
+Rework:
+Remove with micro-abrasion or spot etching. Verify removal did not damage nearby conductors.
+Re-inspect clearance to nearest conductor after removal.
+If removal risks adjacent conductor damage, route to engineering for disposition.

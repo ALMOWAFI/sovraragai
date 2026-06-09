@@ -1,0 +1,34 @@
+Defect: Spur (SP)
+Code: SP | Group: copper_residue_defect | Default action: rework or reject
+
+What it is:
+A thin protrusion of copper extending from the edge of a conductor into a clearance area. Not a full bridge between conductors, but a copper spike or whisker that reduces the gap to adjacent conductors.
+
+What it looks like:
+Pointed or jagged copper extension off the edge of a trace or pad. Extends into the spacing area between conductors. May be very fine and only visible under magnification.
+
+Why it happens:
+- Under-etching leaving copper residue at trace edges
+- Poor photoresist edge definition
+- Copper redeposition during etching
+- Mechanical damage or copper burr from drilling/routing
+
+Electrical impact:
+By itself a spur does not create a short, but it reduces the effective clearance between conductors. Under voltage stress this can lead to dielectric breakdown or dendritic growth bridging to the adjacent conductor. In high-frequency designs it also affects impedance.
+
+Severity: Medium to High
+Depends on how much it reduces the clearance:
+- Spur reduces clearance by <25% → rework candidate
+- Spur reduces clearance by 25–50% → rework required before passing
+- Spur reduces clearance >50% or touches adjacent conductor → treat as Short, reject
+
+Action thresholds:
+- Measure remaining gap after spur
+- Compare against design minimum clearance spec
+- If gap still meets minimum clearance → engineering review, may pass
+- If gap below minimum clearance → rework or reject
+
+Rework:
+Micro-abrasion or controlled etching by qualified technician to remove spur.
+Re-inspect after removal — verify clearance meets spec and no adjacent conductor damage.
+Maximum one rework attempt. If spur cannot be fully removed without damaging adjacent conductor, reject.

@@ -45,10 +45,32 @@ logger = logging.getLogger(__name__)
 
 
 class DefectInput(BaseModel):
-    defect_type: str = Field(..., examples=["surface_crack"])
+    defect_type: str = Field(..., examples=["short"])
     location: str = Field(..., examples=["top-left"])
     confidence: float = Field(..., ge=0.0, le=1.0, examples=[0.96])
     severity: str = Field(..., examples=["high"])
+
+
+# CV system payload models (from Sovra-Vision-Repo /inspection/inspect)
+class CVDetection(BaseModel):
+    detection_id: str | None = None
+    defect_code: str | None = None
+    defect_name: str | None = None
+    defect_group: str | None = None
+    confidence: float | None = None
+    severity_hint: str | None = None
+    location_description: str | None = None
+    possible_impact: str | None = None
+    default_action_hint: str | None = None
+
+class CVVisionResult(BaseModel):
+    defect_detected: bool = False
+    primary_detection: CVDetection | None = None
+    detections: list[CVDetection] = []
+
+class CVPayload(BaseModel):
+    vision_result: CVVisionResult
+    model_config = {"extra": "allow"}  # accept full payload without strict schema
 
 
 class DefectOutput(BaseModel):
@@ -330,6 +352,80 @@ async def explain_defect(defect: DefectInput) -> DefectOutput:
     )
 
     return DefectOutput(**result)
+
+
+# Defect name normalisation — maps CV defect names/codes to knowledge base filenames
+DEFECT_NAME_MAP = {
+    "short": "short",
+    "sh": "short",
+    "open": "open",
+    "op": "open",
+    "mouse bite": "mouse_bite",
+    "mouse_bite": "mouse_bite",
+    "mb": "mouse_bite",
+    "hole breakout": "hole_breakout",
+    "hole_breakout": "hole_breakout",
+    "hb": "hole_breakout",
+    "spur": "spur",
+    "sp": "spur",
+    "spurious copper": "spurious_copper",
+    "spurious_copper": "spurious_copper",
+    "sc": "spurious_copper",
+    "conductor scratch": "conductor_scratch",
+    "conductor_scratch": "conductor_scratch",
+    "cs": "conductor_scratch",
+    "conductor foreign object": "conductor_foreign_object",
+    "conductor_foreign_object": "conductor_foreign_object",
+    "cfo": "conductor_foreign_object",
+    "base material foreign object": "base_material_foreign_object",
+    "base_material_foreign_object": "base_material_foreign_object",
+    "bmfo": "base_material_foreign_object",
+}
+
+
+@app.post(
+    "/inspect",
+    response_model=DefectOutput,
+    summary="Accept Sovra Vision payload and return RAG analysis",
+)
+async def inspect(payload: CVPayload) -> DefectOutput:
+    """
+    Bridge endpoint for the Sovra CV system.
+    Accepts the full /inspection/inspect payload from Sovra-Vision-Repo
+    and returns the same structured analysis as /explain-defect.
+    """
+    vision = payload.vision_result
+
+    if not vision.defect_detected:
+        return DefectOutput(
+            defect_explanation="No defect detected by the vision system.",
+            severity_assessment="low",
+            recommended_action="pass",
+            justification="Vision system reported no defect detected.",
+            sop_references=[],
+            confidence=1.0,
+        )
+
+    detection = vision.primary_detection
+    if not detection:
+        raise HTTPException(status_code=422, detail="defect_detected is true but primary_detection is missing.")
+
+    raw_name = (detection.defect_name or detection.defect_code or "").strip().lower()
+    defect_type = DEFECT_NAME_MAP.get(raw_name, raw_name.replace(" ", "_"))
+    location = detection.location_description or "unknown"
+    confidence = detection.confidence or 0.0
+    severity = (detection.severity_hint or "medium").lower()
+
+    logger.info(f"/inspect → mapped '{raw_name}' to '{defect_type}'")
+
+    return await explain_defect(
+        DefectInput(
+            defect_type=defect_type,
+            location=location,
+            confidence=confidence,
+            severity=severity,
+        )
+    )
 
 
 if __name__ == "__main__":

@@ -1,0 +1,31 @@
+Defect: Open (OP)
+Code: OP | Group: copper_deficiency_defect | Default action: reject
+
+What it is:
+A break or gap in a copper conductor where continuity is required. The trace or via is physically interrupted, breaking the electrical path.
+
+What it looks like:
+Visible gap or thinning in a copper trace. May appear as a complete break, or as a very thin remaining section that has no conductivity. Sometimes only detectable under magnification or via electrical test.
+
+Why it happens:
+- Under-etching leaving copper too thin
+- Mechanical damage during handling or depaneling
+- Drill registration error cutting through a trace
+- Via with no copper plating (missed plating step)
+- Corroded or oxidized trace creating high-resistance open
+
+Electrical impact:
+Complete loss of signal or power on the affected net. Downstream components receive no supply or signal. Can cause entire functional block to fail.
+
+Severity: Critical
+An open on any required conductor is always a reject. No acceptable level of open circuit exists.
+
+Action thresholds:
+- Confirmed open on functional trace → reject
+- Open on via → reject, verify via cross-section if needed for supplier feedback
+- Suspected open, not electrically confirmed → run continuity test, do not pass without confirmation
+
+Rework:
+Not reworkable by standard SMT rework. This is a fabrication defect.
+Reject and return to PCB supplier. Document with image and electrical test data.
+In some cases, jumper wire repair is permitted for prototype or low-volume boards only — requires engineering sign-off and is not allowed for production or Class 3 assemblies.

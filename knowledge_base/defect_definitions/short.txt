@@ -1,0 +1,29 @@
+Defect: Short (SH)
+Code: SH | Group: copper_residue_defect | Default action: reject
+
+What it is:
+Unintended copper connection between two conductors that should be isolated. Extra copper material bridges a gap and creates a short circuit.
+
+What it looks like:
+Copper trace or blob visually connecting two pads or traces that should have a gap between them. Usually appears as a thin or thick copper bridge under AOI.
+
+Why it happens:
+- Etching process did not fully remove copper between conductors
+- Over-plating during PCB fabrication
+- Copper splash or debris from drilling
+- Design rule violation — conductors too close for the fab process capability
+
+Electrical impact:
+Direct short between the bridged nets. In power nets this can cause immediate overcurrent. In signal nets it causes logic errors or signal corruption. Always a functional failure.
+
+Severity: Critical
+No acceptable condition. Any confirmed short between isolated conductors is a reject.
+
+Action thresholds:
+- Confirmed short → reject, no exceptions
+- Suspected short, not confirmed → verify with continuity test before routing to reject
+- Short in power net (VCC/GND) → reject immediately, quarantine lot
+
+Rework:
+Generally not reworkable at board level — this is a fabrication defect. Reject and return to PCB supplier with defect documentation.
+If the short is minor copper residue between pads (not a trace-to-trace fab defect), micro-abrasion by a qualified technician may be attempted once — but success rate is low and re-inspection is mandatory.

@@ -42,21 +42,15 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 KNOWN_DEFECT_TYPES = [
-    "surface_crack",
-    "solder_bridge",
-    "missing_component",
-    "tombstoning",
-    "cold_solder_joint",
-    "lifted_pad",
-    "open_circuit",
-    "short_circuit",
-    "void",
-    "delamination",
-    "oxidation",
-    "misalignment",
-    "wrong_component",
-    "insufficient_solder",
-    "excess_solder",
+    "short",
+    "open",
+    "mouse_bite",
+    "hole_breakout",
+    "spur",
+    "spurious_copper",
+    "conductor_scratch",
+    "conductor_foreign_object",
+    "base_material_foreign_object",
 ]
 
 
