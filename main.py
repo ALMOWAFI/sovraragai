@@ -253,6 +253,7 @@ async def explain_defect(defect: DefectInput) -> DefectOutput:
             "temperature": 0.1,
             "top_p": 0.9,
             "num_predict": 1024,
+            "num_ctx": 8192,
         },
     }
 

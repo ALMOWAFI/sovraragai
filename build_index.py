@@ -19,8 +19,8 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 from langchain_community.document_loaders import PyPDFLoader, TextLoader
+from langchain_community.embeddings import OllamaEmbeddings
 from langchain_community.vectorstores import FAISS
-from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 load_dotenv()
@@ -160,10 +160,9 @@ def build_index() -> None:
     chunks = chunk_documents(documents)
 
     logger.info(f"Step 3/4 — Loading embedding model '{EMBEDDING_MODEL}'...")
-    embeddings = HuggingFaceEmbeddings(
-        model_name=EMBEDDING_MODEL,
-        model_kwargs={"device": "cpu"},
-        encode_kwargs={"normalize_embeddings": True},
+    embeddings = OllamaEmbeddings(
+        model=EMBEDDING_MODEL,
+        base_url=os.getenv("OLLAMA_BASE_URL", "http://localhost:11434"),
     )
 
     logger.info(f"Step 4/4 — Building FAISS index from {len(chunks)} chunks...")

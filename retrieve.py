@@ -21,8 +21,8 @@ from pathlib import Path
 from typing import Any
 
 from dotenv import load_dotenv
+from langchain_community.embeddings import OllamaEmbeddings
 from langchain_community.vectorstores import FAISS
-from langchain_huggingface import HuggingFaceEmbeddings
 
 load_dotenv()
 
@@ -38,18 +38,17 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 # Module-level singletons — loaded once, reused across calls
-_embeddings: HuggingFaceEmbeddings | None = None
+_embeddings: OllamaEmbeddings | None = None
 _vectorstore: FAISS | None = None
 
 
-def _get_embeddings() -> HuggingFaceEmbeddings:
+def _get_embeddings() -> OllamaEmbeddings:
     global _embeddings
     if _embeddings is None:
         logger.info(f"Loading embedding model: {EMBEDDING_MODEL}")
-        _embeddings = HuggingFaceEmbeddings(
-            model_name=EMBEDDING_MODEL,
-            model_kwargs={"device": "cpu"},
-            encode_kwargs={"normalize_embeddings": True},
+        _embeddings = OllamaEmbeddings(
+            model=EMBEDDING_MODEL,
+            base_url=os.getenv("OLLAMA_BASE_URL", "http://localhost:11434"),
         )
     return _embeddings
 
