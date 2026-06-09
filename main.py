@@ -162,15 +162,27 @@ def build_prompt(defect: DefectInput, chunks: list[dict]) -> str:
     prod_block = "\n".join(prod_lines) if prod_lines else "No historical context available."
 
     return f"""/no_think
-PCB defect detected: {defect.defect_type.replace("_", " ")}, location: {defect.location}, confidence: {defect.confidence:.0%}, severity: {defect.severity}.
+You are a PCB quality engineer. A defect was detected. You must consider BOTH the defect AND the production history to decide the action.
 
-PRODUCTION HISTORY:
+DEFECT: {defect.defect_type.replace("_", " ")} | location: {defect.location} | confidence: {defect.confidence:.0%} | severity: {defect.severity}
+
+PRODUCTION HISTORY (critical — use this to decide action):
 {prod_block}
 
 KNOWLEDGE BASE:
 {sop_context}
 
-Based on the defect, production history, and knowledge base, reply with only this JSON:
+DECISION RULES (apply in order — first match wins):
+- If calibration event happened recently AND detection rate increased AND manual confirmation rate is low → manual_review
+- If same defect recurring at same station with increasing trend → clean_station
+- If defect spread across multiple lines or factories linked to same supplier lot → quarantine_lot
+- If previous repair failed and defect returned in same location → escalate
+- If detection confidence is low (<0.5) and no history → manual_review
+- If defect is in non-functional board zone → pass
+- If single isolated defect, reworkable → rework
+- If critical defect, not reworkable or multiple critical defects → reject
+
+Reply with only this JSON:
 {{"defect_explanation": "...", "severity_assessment": "low|medium|high|critical", "recommended_action": "pass|rework|reject|escalate|clean_station|quarantine_lot|manual_review", "justification": "...", "sop_references": ["..."], "confidence": {defect.confidence}}}"""
 
 
