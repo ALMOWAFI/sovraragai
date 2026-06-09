@@ -1,0 +1,87 @@
+QUALITY CRITERIA DOCUMENT
+QCD-002: PCB Assembly REWORK Thresholds
+Revision: 3.0 | Effective Date: 2024-03-01 | Owner: Quality Engineering
+Conformance Standard: IPC-A-610 Rev G / IPC-7711/7721
+
+1. PURPOSE
+This document defines conditions under which PCB assemblies shall be routed to rework rather than directly scrapped or passed. Rework is the controlled process of correcting a specific defect to bring the assembly to conforming status.
+
+2. REWORK ELIGIBILITY CRITERIA
+A defect is rework-eligible when ALL of the following conditions are true:
+    a) The defect type has an approved rework procedure in SOP-RWK-001 or sub-procedures
+    b) The rework attempt count at that location has not been exceeded (see limits below)
+    c) The board's total rework event count does not exceed 3 distinct locations
+    d) The rework can be performed without risk of secondary damage
+    e) The defect is not on a Class 3 critical component that prohibits rework
+
+3. DEFECT-SPECIFIC REWORK ROUTING THRESHOLDS
+
+3.1 SOLDER BRIDGE — Route to Rework IF:
+    - Bridge is accessible (not under component package)
+    - Bridge is between signal pads (not VCC-GND direct short)
+    - First or second rework attempt at location
+    - No signs of thermal damage around bridge
+    Action: Solder wick removal per SOP-RWK-002
+    Post-rework: AOI re-inspection required; ICT required if bridge was between electrical nets
+
+3.2 MISSING COMPONENT — Route to Rework IF:
+    - Component is ≥0402 package (smaller may not be reliably hand-placed)
+    - Replacement component available and verified (correct value, package, date code)
+    - Pads are clean, tinned, and undamaged
+    - First rework attempt (missing component = single rework event)
+    Action: Component placement per SOP-RWK-003
+    Post-rework: AOI + visual inspection; functional test if component is in active circuit
+
+3.3 TOMBSTONING — Route to Rework IF:
+    - Component body is intact (not cracked during tombstoning)
+    - Lifted pad is not damaged or lifted from substrate
+    - First rework attempt at that component location
+    Action: Hot air reflow and repositioning per SOP-RWK-004
+    Post-rework: AOI re-inspection; measure solder fillets at both ends
+
+3.4 COLD SOLDER JOINT — Route to Rework IF:
+    - Joint is accessible with iron or hot air
+    - Component is not heat-sensitive (check datasheet Tmax)
+    - First or second rework attempt at joint
+    - No evidence of pad lifting from previous rework
+    Action: Flux and reflow per SOP-RWK-005
+    Post-rework: AOI; visual inspection at 10x; electrical continuity test
+
+3.5 SURFACE CRACK — Route to Rework IF:
+    - Crack confined to solder mask only (no copper exposure)
+    - Crack length <2mm
+    - Crack not in high-stress zone (mounting holes, connectors)
+    - Board class is 1 or 2 (Class 3 cracks require MRB regardless)
+    Action: Conformal coating application to seal crack; document with photograph
+    Note: Substrate cracks are NOT rework-eligible — route to MRB/scrap
+
+4. REWORK ESCALATION RULES
+    - Rework fails (e.g., pad lifts, component damaged) → Scrap or MRB
+    - Same defect recurs after rework → Escalate to process engineering, potential scrap
+    - Rework attempt count exceeded → Route to MRB for engineering disposition
+    - Rework creates secondary defect → Treat secondary defect as new rework event; count applies
+
+5. CONFIDENCE-BASED ROUTING FOR AI INSPECTION SYSTEMS
+    For AI/ML-detected defects, routing recommendations:
+    - AI confidence 0.90–1.00 + defect type has SOP → Auto-route to rework queue
+    - AI confidence 0.75–0.89 → Route to human verification first; human confirms rework routing
+    - AI confidence 0.60–0.74 → Human inspection mandatory; human decides routing
+    - AI confidence < 0.60 → Flag as uncertain; do not route automatically; manual review
+
+6. REWORK TRACKING AND METRICS
+    - All rework events tracked in QMS by board serial number
+    - Rework yield target: >85% (boards successfully corrected on first rework attempt)
+    - Rework escape rate target: <0.1% (reworked boards failing downstream)
+    - High rework volume (>5% of production) triggers process investigation
+
+7. REWORK COMPLETION REQUIREMENTS
+    - Completed rework boards must be re-inspected to same criteria as new boards
+    - Rework documentation added to DHR before board can be released
+    - Rework notation must be visible on board traveler/label
+
+REFERENCES:
+- SOP-RWK-001 through SOP-RWK-005
+- IPC-7711/7721: Rework, Repair and Modification
+- IPC-A-610 Rev G: Section 8 (Rework)
+- QCD-001: Pass Thresholds
+- QCD-003: Reject Thresholds

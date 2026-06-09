@@ -1,0 +1,107 @@
+QUALITY CRITERIA DOCUMENT
+QCD-003: PCB Assembly REJECT Thresholds
+Revision: 3.5 | Effective Date: 2024-03-01 | Owner: Quality Engineering
+Conformance Standard: IPC-A-610 Rev G
+
+1. PURPOSE
+This document defines conditions under which PCB assemblies must receive REJECT disposition and be removed from the production flow. Rejected boards must NOT be shipped and require documented disposition (scrap, MRB, or engineering review).
+
+2. ABSOLUTE REJECT CONDITIONS (No Exceptions)
+The following conditions always result in REJECT regardless of board class, customer, or circumstance:
+    a) VCC-to-GND solder bridge (direct power short circuit)
+    b) Missing safety-critical component (fuse, TVS diode, surge protector, safety relay)
+    c) Board with confirmed open circuit in primary power path
+    d) Substrate delamination or measling >25% of board area
+    e) Through-board cracks or fractures in PCB substrate
+    f) Evidence of arcing, burning, or thermal damage
+    g) Corrosion, dendritic growth, or conductive contamination
+    h) Counterfeit or unverified component installed
+    i) Rework attempt count exceeded with defect still present
+    j) Board dropped onto hard surface from >30cm height (handling incident protocol)
+
+3. DEFECT-SPECIFIC REJECT THRESHOLDS
+
+3.1 SOLDER BRIDGE — Reject IF:
+    - Bridge between VCC and GND rails (immediate scrap or MRB for cost recovery)
+    - Bridge not accessible for rework (e.g., under BGA, under component body)
+    - Two or more failed rework attempts at same bridge location
+    - Bridge rework caused pad lifting or trace damage
+    - Multiple bridges (>3) present on a single board
+    Disposition: Scrap if primary bridge is power short; MRB if recoverable
+
+3.2 MISSING COMPONENT — Reject IF:
+    - Missing safety-critical or protection component (fuse, TVS, varistor, isolation component)
+    - Replacement component not available or not verified
+    - Pad is damaged, lifted, or contaminated — cannot safely place replacement
+    - Component package is BGA or other non-manually-placeable type
+    - Missing component is in Class 3 safety circuit with no hand-rework approval
+    Disposition: Scrap if no rework path; MRB if engineering can authorize alternative
+
+3.3 SURFACE CRACK — Reject IF:
+    - Crack penetrates PCB substrate (laminate fracture, not just solder mask)
+    - Crack crosses or touches any copper conductor or via
+    - Crack length >3mm in any direction
+    - Multiple cracks (>2) detected on single board
+    - Any substrate crack on Class 3 assembly
+    - Crack near mounting hole with propagation risk
+    Disposition: Scrap (structural integrity compromised — not recoverable by rework)
+
+3.4 COLD SOLDER JOINT — Reject IF:
+    - Joint confirmed cracked or fractured (visible separation)
+    - Joint shows measurable high resistance (>10 Ω above nominal)
+    - Two rework attempts failed to produce acceptable joint
+    - Joint is inaccessible for rework
+    - Cold joint on BGA package (requires full reball — Class 3 prohibition)
+    Disposition: Scrap or BGA reball (specialty rework, requires approval)
+
+3.5 TOMBSTONING — Reject IF:
+    - Component body cracked or damaged during tombstoning event
+    - Pad lifted or delaminated (common if tombstone was violent)
+    - Rework caused secondary damage to adjacent components
+    - Component location is within 0.5mm of another component preventing rework access
+    Disposition: Scrap if pad damaged; MRB if adjacent component risk
+
+3.6 COMPONENT DAMAGE — Reject IF:
+    - Component body cracked or broken (mechanical damage)
+    - Component leads bent beyond recovery (>45° deformation)
+    - Component markings obliterated (cannot verify value or date code for Class 3)
+    - Wrong component installed and removal causes pad damage
+    Disposition: Scrap or MRB based on board value
+
+4. SEVERITY-BASED REJECT SCORING (AI/ML Inspection Integration)
+For AI-detected defects, reject disposition is triggered when:
+    - Defect severity = "critical" AND AI confidence ≥ 0.80 → Auto-reject, alert QE
+    - Defect severity = "high" AND AI confidence ≥ 0.85 → Route to reject queue, human verification
+    - Defect severity = "high" AND AI confidence 0.70–0.84 → Human review before reject
+    - Multiple defects detected on single board (any severity) AND total defect count ≥ 4 → Reject
+    - Any absolute reject condition detected at any confidence level → Stop lot, notify QE immediately
+
+5. MRB (Material Review Board) PROCESS
+Boards that do not meet pass criteria but have recovery potential are routed to MRB:
+    - Board value > $200 (component cost alone)
+    - Engineering authorization may enable non-standard rework
+    - Customer concession request process for deviations
+    - MRB must be completed within 5 business days
+    - MRB decision: Rework (with special authorization), Scrap, or Use-As-Is (requires customer approval)
+
+6. LOT REJECTION CRITERIA
+Entire production lot (batch) shall be quarantined and reviewed when:
+    - Reject rate exceeds 5% on any single defect category
+    - Any confirmed counterfeit component found
+    - Two or more critical defects (absolute reject conditions) found in one lot
+    - Process deviation (incorrect paste, wrong reflow profile) confirmed for entire lot
+    Lot quarantine action: Stop shipment, notify customer if already shipped, root cause analysis mandatory
+
+7. REJECT DOCUMENTATION REQUIREMENTS
+    - Reject tag affixed to board (red tag with defect code)
+    - QMS entry: board serial, defect code, detection point, operator ID
+    - Photograph of defect (required for all Class 3 rejects)
+    - Scrap boards must be physically destroyed and destruction documented
+    - Reject data feeds weekly process capability report
+
+REFERENCES:
+- IPC-A-610 Rev G: Acceptability of Electronic Assemblies
+- QCD-001: Pass Thresholds
+- QCD-002: Rework Thresholds
+- SOP-QC-002: Material Review Board Procedure
+- SOP-QC-003: Lot Quarantine and Containment Procedure

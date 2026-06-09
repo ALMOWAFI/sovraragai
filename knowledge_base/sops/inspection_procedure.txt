@@ -1,0 +1,73 @@
+STANDARD OPERATING PROCEDURE
+SOP-INS-001: PCB Automated Optical Inspection (AOI) Procedure
+Revision: 3.2 | Effective Date: 2024-01-15 | Owner: Quality Engineering
+
+1. PURPOSE AND SCOPE
+This SOP defines the procedure for conducting AOI inspection of assembled PCBs in SMT and through-hole production. It applies to all PCB assemblies manufactured at this facility prior to final quality release.
+
+2. EQUIPMENT AND REQUIREMENTS
+2.1 AOI Equipment: Saki BF-X3, Koh Young Zenith, or equivalent
+2.2 Resolution requirement: Minimum 15 µm/pixel
+2.3 Lighting: Multi-angle LED illumination (8 angles minimum for 3D inspection)
+2.4 Programming: Board-specific AOI program required before production start
+2.5 Calibration: Daily calibration verification with certified reference board
+
+3. PRE-INSPECTION SETUP
+3.1 Verify AOI machine calibration status — must show "PASS" for current shift
+3.2 Load correct AOI program matching PCB assembly part number and revision
+3.3 Verify program matches current BOM revision — cross-check DNP designators
+3.4 Set conveyor speed and board support pins per board mechanical specifications
+3.5 Run 3 golden boards through system and verify 0 false calls before production
+
+4. INSPECTION EXECUTION
+4.1 POST PASTE INSPECTION (SPI):
+    - Run Solder Paste Inspection before component placement
+    - Verify paste volume: 80%–120% of nominal (per pad design)
+    - Verify paste alignment: ≤25% offset from pad center
+    - Flag any paste bridging between pads immediately
+    - Stop production if >3% of boards show paste defects — notify process engineer
+
+4.2 POST PLACEMENT INSPECTION (optional, line-dependent):
+    - Verify component presence at all non-DNP locations
+    - Check placement offset (X,Y,θ) against tolerances:
+      * 0402 and smaller: ≤50% pad overlap required
+      * 0603 and larger: ≤25% offset from pad center
+      * IC leads: ≤25% overhang from pad
+
+4.3 POST REFLOW INSPECTION (PRIMARY):
+    - Inspect every board after reflow cooling
+    - AOI program must cover 100% of non-DNP component locations
+    - Minimum inspection categories: component presence, solder bridges, tombstoning, solder volume, polarity, component value (where barcode/marking readable)
+
+5. DEFECT CLASSIFICATION AND DISPOSITION
+5.1 Each defect flagged by AOI must be reviewed at operator verification station
+5.2 CONFIRM as real defect → route to rework queue with defect ticket
+5.3 CONFIRM as false call → mark as false positive in AOI system log
+5.4 Do NOT clear defect without operator physical verification
+
+5.3 DEFECT ESCALATION THRESHOLDS:
+    - >2% defect rate on any defect category → stop line, notify process engineer
+    - Any critical defect (short VCC-GND, missing safety component) → stop lot, MRB review
+    - >5 false positives per shift on same defect type → recalibrate AOI program
+
+6. DOCUMENTATION REQUIREMENTS
+6.1 Log all AOI results in QMS (board serial number, defect codes, disposition)
+6.2 Attach AOI inspection image to DHR (Device History Record)
+6.3 Rework events must be documented with before/after images
+6.4 Weekly defect Pareto report to process engineering
+
+7. SPECIAL HANDLING
+7.1 Class 3 (IPC-A-610 Class 3) assemblies require 100% X-ray in addition to AOI
+7.2 Boards with confirmed conformal coating requirement must pass AOI before coating
+7.3 Prototype boards: AOI optional but 100% manual inspection by senior IPC-certified inspector required
+
+8. REFERENCES
+- IPC-A-610 Rev G: Acceptability of Electronic Assemblies
+- IPC-7711/7721: Rework, Repair and Modification of Electronic Assemblies
+- SOP-RWK-001: General Rework Authorization Procedure
+- QCP-001: Quality Control Plan for SMT Assembly
+
+9. REVISION HISTORY
+Rev 3.2 (2024-01-15): Added SPI requirements; updated escalation thresholds
+Rev 3.1 (2023-06-01): Added Class 3 X-ray requirement
+Rev 3.0 (2023-01-10): Major revision — added post-placement inspection step

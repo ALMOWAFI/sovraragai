@@ -1,0 +1,105 @@
+STANDARD OPERATING PROCEDURE
+SOP-RWK-001: PCB Rework Authorization and General Rework Procedure
+Revision: 2.4 | Effective Date: 2024-02-20 | Owner: Quality Engineering / Manufacturing
+
+1. PURPOSE AND SCOPE
+This SOP establishes the authorization process and general requirements for reworking PCB assemblies with identified defects. Rework is only permitted within defined limits. Boards exceeding rework limits must be routed to MRB (Material Review Board) for disposition.
+
+2. REWORK AUTHORIZATION REQUIREMENTS
+2.1 All rework must be performed by IPC-certified technicians (IPC J-STD-001 or IPC-7711/7721)
+2.2 Rework must be authorized in the QMS system with defect ticket number
+2.3 Rework station must be calibrated and ESD-compliant (wrist strap + mat, verified daily)
+2.4 Rework must not begin without written rework procedure for specific defect type
+2.5 Maximum rework attempts per location:
+    - SMD components (0402 and larger): 2 attempts maximum
+    - Fine-pitch IC (pitch < 0.5mm): 1 attempt maximum
+    - BGA components: 1 attempt; must be reballed, not field-reflowed
+    - Through-hole components: 3 attempts maximum
+
+3. REWORK TEMPERATURE AND TOOL REQUIREMENTS
+3.1 Soldering Iron:
+    - Temperature: 315°C–370°C for lead-free (SAC305)
+    - Temperature: 260°C–315°C for tin-lead (SnPb)
+    - Tip condition: Clean, tinned — replace if oxidized or pitted
+    - Dwell time: 2–4 seconds per joint; do not exceed 5 seconds
+
+3.2 Hot Air Rework Station:
+    - Nozzle selection: Appropriate to component package size
+    - Temperature: 330°C–380°C at nozzle (verify with thermocouple)
+    - Airflow: Minimum setting to prevent component displacement
+    - Preheat board to 100°C–120°C before hot air application
+
+3.3 Flux:
+    - Use no-clean rosin flux for all lead-free rework
+    - Halide-free flux required for Class 3 assemblies
+    - Apply flux only to joint being reworked — avoid excessive spread
+
+4. REWORK PROCEDURES BY DEFECT TYPE
+
+4.1 SOLDER BRIDGE REMOVAL (SOP-RWK-002):
+    Step 1: Apply flux to bridge and adjacent pads
+    Step 2: Touch solder wick to bridge; apply iron to wick (not directly to bridge)
+    Step 3: Move wick slowly to absorb solder — do not drag across pads
+    Step 4: Inspect gap — use magnification (10x minimum)
+    Step 5: Clean with IPA if residue present
+    Step 6: Re-inspect with AOI — verify no bridge, no pad damage
+
+4.2 MISSING COMPONENT PLACEMENT (SOP-RWK-003):
+    Step 1: Verify correct component from BOM (value, package, polarity)
+    Step 2: Apply flux to pads
+    Step 3: Place component with tweezers; verify alignment under microscope
+    Step 4: Tack one end with iron; verify alignment; solder second end; reflow first
+    Step 5: Inspect solder joints (concave fillet, full wetting, no bridges)
+    Step 6: Re-inspect by AOI
+
+4.3 TOMBSTONING CORRECTION (SOP-RWK-004):
+    Step 1: Apply flux to both pads
+    Step 2: Heat both joints simultaneously with appropriate hot air nozzle
+    Step 3: When both joints liquid, gently press component flat with ESD tweezers
+    Step 4: Remove heat; hold component flat until solidified (3–5 seconds)
+    Step 5: Inspect both joints; re-run AOI
+
+4.4 COLD SOLDER JOINT REWORK (SOP-RWK-005):
+    Step 1: Apply flux to affected joint
+    Step 2: Touch iron to joint for 2–3 seconds — allow solder to reflow
+    Step 3: Remove iron; allow to cool undisturbed
+    Step 4: Inspect: joint should be bright, smooth, concave fillet
+    Step 5: Re-test electrically; re-inspect by AOI
+
+5. POST-REWORK REQUIREMENTS
+5.1 All reworked boards must undergo:
+    - Visual inspection at 10x magnification by rework technician
+    - AOI re-inspection of reworked area
+    - ICT or functional test if defect was electrical in nature
+    - X-ray if rework was on BGA or hidden joint
+
+5.2 Document all rework in QMS:
+    - Before and after images (required)
+    - Rework technician ID
+    - Date, time, station ID
+    - Post-rework test results
+
+6. REWORK LIMITS AND SCRAP CRITERIA
+6.1 Scrap the board if any of the following occur:
+    - Pad lifting during rework
+    - Trace damage or delamination
+    - Component damage (cracked body, burnt leads)
+    - Third rework attempt on same location required
+    - BGA rework fails on first attempt
+
+6.2 Route to MRB if:
+    - Defect cannot be reworked by standard procedure
+    - Board value exceeds $500 and creative rework may recover it
+    - Engineering disposition required
+
+7. ESD HANDLING
+7.1 All rework must be performed at ESD-protected workstation
+7.2 Technician wrist strap must be verified before each shift
+7.3 Handle all boards by edges; never touch component or conductor surfaces bare-handed
+
+REFERENCES:
+- IPC-7711/7721: Rework, Repair and Modification of Electronic Assemblies
+- IPC J-STD-001: Requirements for Soldering Electrical and Electronic Assemblies
+- IPC-A-610: Acceptability of Electronic Assemblies
+- SOP-INS-001: AOI Inspection Procedure
+- SOP-QC-001: Quality Control Disposition Procedure

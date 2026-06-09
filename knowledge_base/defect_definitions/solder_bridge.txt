@@ -1,0 +1,73 @@
+DEFECT TYPE: Solder Bridge
+CATEGORY: Soldering Defect
+IPC CLASSIFICATION: IPC-A-610 Class 2/3 — Defect (Always Reject)
+
+DEFINITION:
+A solder bridge is an unintended solder connection between two or more conductors that should be electrically isolated. It creates an unwanted short circuit between adjacent pads, pins, traces, or components.
+
+VISUAL CHARACTERISTICS:
+- Visible solder filament or blob connecting adjacent pads or pins
+- Often shiny metallic appearance bridging a gap between conductors
+- May be very thin (hairline bridge) or thick (gross bridge)
+- Common in fine-pitch components (0.4mm–0.8mm pitch QFP, BGA, 0201 passives)
+- Detectable by AOI via contrast analysis of inter-pad gaps
+
+TYPES OF SOLDER BRIDGES:
+1. Pin-to-Pin Bridge: Between adjacent IC pins or component leads
+2. Pad-to-Pad Bridge: Between adjacent SMD pads without components
+3. Trace-to-Trace Bridge: Solder spanning between nearby PCB traces
+4. Component-to-Ground Bridge: Lead shorting to ground plane or copper pour
+5. BGA Column Bridge: Solder sphere merging between adjacent BGA balls
+
+ROOT CAUSES:
+- Excess solder paste volume (incorrect stencil aperture or printing pressure)
+- Stencil misalignment causing paste displacement
+- Component placement offset pushing paste outward
+- Insufficient solder mask dam between pads (solder mask design error)
+- Reflow profile issues (too slow ramp, insufficient peak temperature)
+- Flux outgassing causing solder splatter
+- Contaminated PCB surface reducing solder surface tension
+- Manual soldering technique errors (excess solder, improper iron tip)
+- Conveyor wave soldering with incorrect parameters
+
+ELECTRICAL IMPACT:
+- Direct short circuit between bridged conductors
+- Overcurrent and potential component failure
+- Logic errors in digital circuits (data bus corruption)
+- Power supply damage if VCC bridged to GND
+- Signal cross-talk or data corruption
+- ESD vulnerability in bridged protection circuits
+
+DETECTION METHODS:
+- AOI: Primary detection — inter-pad gap analysis, coverage threshold algorithms
+- X-ray inspection: Critical for BGA and hidden joints under packages
+- Flying probe or ICT: Continuity testing catches electrical shorts
+- Visual inspection under 10x–40x magnification
+- Boundary scan (JTAG) for populated assemblies
+
+SEVERITY CLASSIFICATION:
+- ALL solder bridges are rejectable defects per IPC-A-610
+- No bridge is acceptable regardless of board class or application
+- Severity rating for prioritization:
+  - HIGH: Bridge between power and signal nets
+  - CRITICAL: Bridge between VCC and GND rails (potential immediate damage)
+  - HIGH: Bridge between differential pair signals (immediate signal degradation)
+  - MEDIUM: Bridge between isolated signal nets (functional failure)
+
+ACCEPT/REJECT CRITERIA:
+- REJECT: Any confirmed solder bridge between electrically isolated conductors
+- No exceptions per IPC-A-610 Rev G, Section 7.3
+- REWORK ELIGIBLE: If bridge can be removed without lifting pads or damaging component
+- REJECT AFTER REWORK ATTEMPT: If pad lifting, component damage, or trace damage occurs during rework
+
+REWORK PROCESS REFERENCE:
+See SOP-RWK-002: Solder Bridge Removal Procedure
+- Use solder wick with appropriate flux for bridge removal
+- Verify with AOI re-inspection post-rework
+- Maximum 2 rework attempts per location; reject after second failure
+- BGA bridges require reballing; field rework not permitted for BGA shorts
+
+IPC CROSS-REFERENCE:
+- IPC-A-610: Section 7.3 (Solder Connection Evaluation)
+- IPC J-STD-001: Section 7 (Through-hole and SMT Soldering Requirements)
+- IPC-7711/7721: Rework, Repair and Modification procedures

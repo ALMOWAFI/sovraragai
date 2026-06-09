@@ -1,0 +1,89 @@
+QUALITY CRITERIA DOCUMENT
+QCD-001: PCB Assembly PASS Thresholds
+Revision: 4.1 | Effective Date: 2024-03-01 | Owner: Quality Engineering
+Conformance Standard: IPC-A-610 Rev G
+
+1. PURPOSE
+This document defines the acceptance criteria for PCB assemblies to receive PASS disposition and proceed to next process step or shipment. All criteria must be met simultaneously for a PASS disposition.
+
+2. SOLDER JOINT PASS CRITERIA
+
+2.1 SMD Solder Joints (all classes unless noted):
+    - Fillet appearance: Bright, smooth, concave meniscus
+    - Wetting: ≥75% of pad area wetted for Class 2; ≥85% for Class 3
+    - Solder height: Extends to component termination; does not exceed component body
+    - No visible voids on joint surface (subsurface voids <25% of joint area per X-ray, Class 2)
+    - No bridging to adjacent conductors
+
+2.2 Chip Component (Resistors, Capacitors, Inductors) Pass Criteria:
+    - Solder fillet present on both ends
+    - Minimum end cap coverage: 25% of component end cap height
+    - Maximum solder height: Does not exceed top of component body
+    - Component alignment: Side overhang ≤25% of component width
+    - Component flatness: ≤5° tilt from PCB surface
+    - No cracks, chips, or damage to component body visible at 10x
+
+2.3 IC Gull-Wing (QFP, SOP, SOIC) Pass Criteria:
+    - Heel fillet: Present and visible on all leads
+    - Toe fillet: Present (minimum 50% of lead width)
+    - Side fillet: Present on at least one side of lead
+    - Lead alignment: ≤25% overhang from pad
+    - Pitch-to-solder relationship: Solder does not bridge between adjacent leads
+    - Lead coplanarity: All leads within 0.1mm of pad surface (per IPC standard)
+
+2.4 BGA Pass Criteria (X-ray required):
+    - Ball collapse: 40%–60% of original ball diameter (normal reflow)
+    - No missing balls (ball count matches package specification)
+    - No bridging between adjacent balls
+    - Ball voids: <25% of ball area (Class 2); <10% (Class 3)
+    - Ball diameter uniformity: Within ±15% across package
+
+3. COMPONENT PLACEMENT PASS CRITERIA
+    - All BOM-required components present at correct locations
+    - DNP components absent from board
+    - No component reversal (polarity correct for all polarized components)
+    - No wrong-value components (where value is visually verifiable)
+    - Component body intact — no cracks, chips, or missing sections
+    - Marking legible (where applicable and required by class)
+
+4. PCB SUBSTRATE PASS CRITERIA
+    - No delamination, blistering, or measling (subsurface damage)
+    - No surface cracks in base laminate
+    - Solder mask intact (minor scratches away from conductors acceptable for Class 2)
+    - No copper exposure where solder mask should be present
+    - Board warpage: ≤0.75% of board diagonal (IPC-A-610 target)
+    - Via fill: Per design specification (not required if design does not specify)
+
+5. CLEANLINESS PASS CRITERIA
+    - No visible flux residue on Class 3 boards (must be cleaned)
+    - Ionic contamination: <1.56 µg/cm² NaCl equivalent (IPC-6012 requirement)
+    - No white residue, corrosion, or dendritic growth
+    - No foreign material (solder balls, tin whiskers, debris)
+
+6. AUTOMATED INSPECTION PASS THRESHOLDS (AOI System)
+    - False call rate: <0.5% per board inspection (well-tuned program)
+    - Minimum detectable bridge: 0.05mm gap violation
+    - Minimum detectable missing component: Triggered for all 0402 and larger absent components
+    - Board passes AOI when zero unresolved defect flags remain after operator verification
+    - Note: AOI PASS does not override manual inspection findings
+
+7. CONFIDENCE THRESHOLDS FOR AI/ML INSPECTION SYSTEMS
+    - Defect classification confidence ≥ 0.85: Treat as confirmed defect, route to rework queue
+    - Defect classification confidence 0.70–0.84: Route to human verification station
+    - Defect classification confidence < 0.70: Log as uncertain, human inspection mandatory
+    - For critical defect categories (bridge, missing safety component): Threshold ≥ 0.80 triggers immediate stop
+
+8. FINAL PASS CHECKLIST
+    □ AOI inspection passed (zero unresolved flags)
+    □ ICT passed (if applicable to board type)
+    □ Functional test passed (if required by specification)
+    □ Visual inspection by IPC-certified inspector completed
+    □ All rework actions documented and re-inspected
+    □ Board traceability label applied (serial number, date, operator ID)
+    □ DHR (Device History Record) complete and signed
+
+REFERENCE STANDARDS:
+- IPC-A-610 Rev G: Acceptability of Electronic Assemblies (primary)
+- IPC J-STD-001: Soldering Requirements
+- IPC-6012: Qualification and Performance Specification for Rigid PCBs
+- Customer-specific acceptance criteria (where applicable — supersede IPC minimums)

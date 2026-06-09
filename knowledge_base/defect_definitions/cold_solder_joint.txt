@@ -1,0 +1,77 @@
+DEFECT TYPE: Cold Solder Joint (Disturbed / Dull Solder Joint)
+CATEGORY: Soldering Defect
+IPC CLASSIFICATION: IPC-A-610 Class 2/3 — Defect
+
+DEFINITION:
+A cold solder joint is a solder connection that was not properly formed due to insufficient heat, movement during solidification, or contamination. The joint lacks the proper metallurgical bond and exhibits poor electrical and mechanical properties despite appearing connected.
+
+VISUAL CHARACTERISTICS:
+- Dull, grainy, or frosted appearance (vs. normal bright, smooth, concave fillet)
+- Rough or lumpy surface texture
+- Insufficient wetting — solder does not flow smoothly onto pad/lead
+- Possible voids or pinholes visible on joint surface
+- Irregular fillet shape, convex rather than concave
+- Cracked or fractured appearance in severe cases
+- White residue or flux contamination around joint
+
+TYPES:
+1. Cold Joint: Solder heated but joint moved during solidification
+2. Disturbed Joint: Vibration or movement while solder was partially solidified
+3. Fractured Joint: Mechanical stress caused micro-cracks in solidified joint
+4. Insufficient Solder: Low solder volume creating thin, poorly wetted joint
+5. De-wetted Joint: Solder initially wetted but pulled back due to contamination
+
+ROOT CAUSES:
+- Movement of component or board during solder solidification phase
+- Insufficient reflow temperature (peak temperature below 217°C for SAC305)
+- Too short time above liquidus (TAL < 30 seconds)
+- Contaminated PCB pads or component leads (oxidation, oils, residue)
+- Old or degraded solder paste with reduced flux activity
+- Manual soldering with insufficient iron temperature or dwell time
+- Board handling immediately after reflow before complete solidification
+- Thermal shadowing causing cool spots (large adjacent components blocking heat)
+
+ELECTRICAL CHARACTERISTICS:
+- High resistance at joint (can be 10x–100x normal joint resistance)
+- Intermittent connectivity under thermal cycling or vibration
+- Resistance increases over time as joint degrades
+- Initial ICT may pass (connection exists) but functional reliability compromised
+- Failure accelerated in environments with thermal cycling (-40°C to +85°C)
+
+DETECTION METHODS:
+- AOI: Can detect surface texture anomalies using 3D solder paste inspection (SPI) and AOI algorithms
+- X-ray: Detects internal voids and poor solder distribution
+- ICT: May not catch cold joints if resistance is low enough to pass test
+- Thermal imaging: Identifies high-resistance joints as localized hot spots under load
+- Cross-section analysis: Definitive method — reveals grain structure and voids
+- Vibration/shock testing: Reveals intermittent joints under stress
+
+RELIABILITY IMPACT:
+Cold solder joints are particularly dangerous because:
+- They can pass initial electrical testing but fail in field
+- Failure rate increases with thermal cycling exposure
+- Vibration environments accelerate cracking and open circuit development
+- Time-to-failure can range from months to years, making field failures costly
+
+SEVERITY CLASSIFICATION:
+- MEDIUM: Dull joint with no visible crack, passes electrical test
+- HIGH: Dull joint with visible surface irregularity or void
+- CRITICAL: Cracked joint, confirmed high resistance, or visible separation
+
+ACCEPT/REJECT CRITERIA PER IPC-A-610 Rev G:
+- REJECT (Class 3): Any dull or disturbed solder joint appearance
+- REJECT (Class 2): Cold joint with visible cracking, voids, or >25% non-wetting
+- CONDITIONAL (Class 2): Slightly dull joint with full wetting may be evaluated case-by-case
+- REWORK: Re-soldering with appropriate flux; requires ICT/AOI post-rework
+
+REWORK PROCEDURE:
+1. Apply no-clean flux to joint
+2. Reflow with appropriate heat (iron or hot air)
+3. Allow to solidify without movement
+4. Inspect — joint should be bright, smooth, and concave
+5. Clean flux residue if required
+6. Re-inspect with AOI and verify electrical continuity
+
+See SOP-RWK-005: Cold Solder Joint Rework
+See SOP-MFG-003: Reflow Profile Requirements
+IPC Reference: IPC-A-610 Section 7.3 — Solder Connection Evaluation
