@@ -174,10 +174,10 @@ KNOWLEDGE BASE:
 
 DECISION RULES (apply in order — first match wins):
 - If calibration event happened recently AND detection rate increased AND manual confirmation rate is low → manual_review
-- If same defect recurring at same station with increasing trend → clean_station
+- If detection confidence is below 50% → manual_review (no exceptions, regardless of defect type)
 - If defect spread across multiple lines or factories linked to same supplier lot → quarantine_lot
+- If same defect recurring at same station with increasing trend → clean_station
 - If previous repair failed and defect returned in same location → escalate
-- If detection confidence is low (<0.5) and no history → manual_review
 - If defect is in non-functional board zone → pass
 - If single isolated defect, reworkable → rework
 - If critical defect, not reworkable or multiple critical defects → reject
@@ -275,6 +275,41 @@ async def explain_defect(defect: DefectInput) -> DefectOutput:
     result.setdefault("sop_references", [c["metadata"].get("source_file", "unknown") for c in chunks[:3]])
     result["recommended_action"] = result.get("recommended_action", "reject").lower()
     result["severity_assessment"] = result.get("severity_assessment", defect.severity).lower()
+
+    ctx = defect.production_context
+
+    # Hard rule: low confidence with no defect history → always manual_review
+    no_history = ctx is None or (
+        (ctx.same_defect_count_30d is None or ctx.same_defect_count_30d == 0) and
+        (ctx.same_defect_count_90d is None or ctx.same_defect_count_90d == 0)
+    )
+    if defect.confidence < 0.5 and no_history:
+        result["recommended_action"] = "manual_review"
+        result["justification"] = (
+            f"Low detection confidence ({defect.confidence:.0%}) with no defect history. "
+            "Manual verification required. " + result.get("justification", "")
+        )
+
+    # Hard rule: defect spread across multiple factories → quarantine_lot
+    if ctx and ctx.affected_lines and ctx.affected_factories:
+        result["recommended_action"] = "quarantine_lot"
+        result["justification"] = (
+            f"Defect confirmed across multiple lines ({ctx.affected_lines}) and factories "
+            f"({ctx.affected_factories}). Supplier lot quarantine required. " + result.get("justification", "")
+        )
+
+    # Hard rule: engineering rework definitively failed (explicit failure + critical) → reject
+    dispositions = (ctx.previous_dispositions or "") if ctx else ""
+    repair_result = (ctx.last_repair_result or "") if ctx else ""
+    rework_failed = ("rework_failed" in dispositions or "engineering_rework_failed" in dispositions or "failed" in repair_result.lower())
+    if (ctx and ctx.recurrence_after_repair and rework_failed
+            and result.get("severity_assessment") == "critical"
+            and result["recommended_action"] not in ("quarantine_lot", "clean_station", "manual_review")):
+        result["recommended_action"] = "reject"
+        result["justification"] = (
+            "Engineering rework has been attempted and failed; defect recurred. "
+            "Reject is required. " + result.get("justification", "")
+        )
 
     logger.info(f"action={result['recommended_action']!r} severity={result['severity_assessment']!r} ts={timestamp}")
 
